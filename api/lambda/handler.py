@@ -170,8 +170,13 @@ def get_random_word(length: int = 5, max_attempts: int = 1000) -> Dict[str, Any]
             'attempts': 3
         }
     """
-    # Get all words from WordNet
-    all_words = list(wn.words())
+    # Get all words from WordNet and pre-filter by length for efficiency
+    all_words = [w for w in wn.words() if len(w) == length]
+
+    if not all_words:
+        raise Exception(f"No words of length {length} found in WordNet")
+
+    logger.info(f"Found {len(all_words)} words of length {length} in WordNet")
 
     # Filter statistics
     filter_stats = {
