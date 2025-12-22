@@ -335,11 +335,37 @@ main.game-container {
   font-size: 1.1rem;
 }
 
-.definition {
+.definitions {
   margin-top: 1rem;
   padding: 1rem;
   background: var(--definition-overlay);
   border-radius: 6px;
+  text-align: left;
+}
+
+.definitions strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.definitions ol {
+  margin: 0.5rem 0 0 1.5rem;
+  padding: 0;
+}
+
+.definitions li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.definitions li:last-child {
+  margin-bottom: 0;
+}
+
+.definitions p {
+  margin: 0;
   font-style: italic;
 }
 

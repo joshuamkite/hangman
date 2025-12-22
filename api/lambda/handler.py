@@ -154,7 +154,7 @@ def get_random_word(length: int = 5, max_attempts: int = 1000) -> Dict[str, Any]
         Dictionary containing:
         - word (str): The valid word in UPPERCASE
         - length (int): Length of the word
-        - definition (str): WordNet definition of the word
+        - definitions (List[str]): All available definitions for the word
         - attempts (int): Number of random words tried before finding this one
 
     Raises:
@@ -166,7 +166,7 @@ def get_random_word(length: int = 5, max_attempts: int = 1000) -> Dict[str, Any]
         {
             'word': 'ELEPHANT',
             'length': 8,
-            'definition': 'five-toed pachyderm',
+            'definitions': ['five-toed pachyderm', 'large mammal...'],
             'attempts': 3
         }
     """
@@ -198,14 +198,25 @@ def get_random_word(length: int = 5, max_attempts: int = 1000) -> Dict[str, Any]
         is_valid, reason = is_word_valid(word, length)
 
         if is_valid:
-            synset = get_synset_for_word(word)
+            # Get all definitions for the word
+            all_synsets = wn.synsets(word.lower())
+            definitions = [s.definition() for s in all_synsets if s.definition()]
+            # Remove duplicates while preserving order
+            seen = set()
+            unique_definitions = []
+            for d in definitions:
+                if d not in seen:
+                    seen.add(d)
+                    unique_definitions.append(d)
+
             logger.info(f"Found valid word '{word}' after {attempt + 1} attempts")
+            logger.info(f"Found {len(unique_definitions)} unique definitions")
             logger.info(f"Filter statistics: {filter_stats}")
 
             return {
                 'word': word.upper(),
                 'length': len(word),
-                'definition': synset.definition() if synset else None,
+                'definitions': unique_definitions,
                 'attempts': attempt + 1
             }
         else:

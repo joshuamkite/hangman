@@ -5,7 +5,7 @@ export type Difficulty = 'easy' | 'hard';
 export interface WordData {
     word: string;
     length: number;
-    definition: string;
+    definitions: string[];
     attempts: number;
 }
 
@@ -14,7 +14,7 @@ export interface GameState {
     guessedLetters: Set<string>;
     incorrectGuesses: string[];
     gameStatus: 'playing' | 'won' | 'lost' | 'loading';
-    definition: string;
+    definitions: string[];
     figureType: FigureType;
     difficulty: Difficulty;
     wordLength: number;

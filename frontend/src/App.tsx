@@ -16,7 +16,7 @@ function App() {
     guessedLetters: new Set(),
     incorrectGuesses: [],
     gameStatus: 'loading',
-    definition: '',
+    definitions: [],
     figureType: 'person',
     difficulty: 'easy',
     wordLength: 5
@@ -34,7 +34,7 @@ function App() {
       setGameState(prev => ({
         ...prev,
         word: data.word,
-        definition: data.definition,
+        definitions: data.definitions,
         guessedLetters: new Set(),
         incorrectGuesses: [],
         gameStatus: 'playing'
@@ -172,9 +172,18 @@ function App() {
                   {gameState.gameStatus === 'won' && (
                     <div className="game-result won">
                       <h2>You Won!</h2>
-                      <p className="definition">
-                        <strong>Definition:</strong> {gameState.definition}
-                      </p>
+                      <div className="definitions">
+                        <strong>Definition{gameState.definitions.length > 1 ? 's' : ''}:</strong>
+                        {gameState.definitions.length > 0 ? (
+                          <ol>
+                            {gameState.definitions.map((def, idx) => (
+                              <li key={idx}>{def}</li>
+                            ))}
+                          </ol>
+                        ) : (
+                          <p>No definition available</p>
+                        )}
+                      </div>
                     </div>
                   )}
 
@@ -182,9 +191,18 @@ function App() {
                     <div className="game-result lost">
                       <h2>Game Over!</h2>
                       <p>The word was: <strong>{gameState.word}</strong></p>
-                      <p className="definition">
-                        <strong>Definition:</strong> {gameState.definition}
-                      </p>
+                      <div className="definitions">
+                        <strong>Definition{gameState.definitions.length > 1 ? 's' : ''}:</strong>
+                        {gameState.definitions.length > 0 ? (
+                          <ol>
+                            {gameState.definitions.map((def, idx) => (
+                              <li key={idx}>{def}</li>
+                            ))}
+                          </ol>
+                        ) : (
+                          <p>No definition available</p>
+                        )}
+                      </div>
                     </div>
                   )}
                 </>
