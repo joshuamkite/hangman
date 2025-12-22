@@ -2,16 +2,23 @@
 Local development server for Hangman Word Generator API
 Runs the Lambda handler as a Flask API with Swagger UI for interactive testing
 """
-from handler import lambda_handler
-import yaml
-from flask_cors import CORS
 from flask import Flask, jsonify, request
+from flask_cors import CORS
+import yaml
 import sys
 import os
+import importlib.util
 
-# Add lambda directory to path BEFORE importing handler
+# Add lambda directory to path and import handler dynamically
 lambda_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'lambda')
 sys.path.insert(0, lambda_dir)
+
+# Import handler module
+handler_path = os.path.join(lambda_dir, 'handler.py')
+spec = importlib.util.spec_from_file_location("handler", handler_path)
+handler_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(handler_module)
+lambda_handler = handler_module.lambda_handler
 
 
 app = Flask(__name__)
