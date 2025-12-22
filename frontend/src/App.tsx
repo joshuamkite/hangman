@@ -7,6 +7,7 @@ import SpiderFigure from './components/SpiderFigure';
 import WordDisplay from './components/WordDisplay';
 import Keyboard from './components/Keyboard';
 import GameSettings from './components/GameSettings';
+import LicenseModal from './components/LicenseModal';
 import './App.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
   });
 
   const [error, setError] = useState<string>('');
+  const [showLicense, setShowLicense] = useState(false);
 
   const startNewGame = useCallback(async () => {
     setError('');
@@ -110,7 +112,7 @@ function App() {
   return (
     <div className="app">
       <header>
-        <h1>Hangman Game</h1>
+        <h1>Hangman</h1>
       </header>
 
       <main className="game-container">
@@ -196,12 +198,37 @@ function App() {
             incorrectGuesses={gameState.incorrectGuesses}
             disabled={!isGameActive}
           />
+
+          <div className="game-footer">
+            <a
+              href="https://www.joshuakite.co.uk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-button"
+            >
+              Visit My Website
+            </a>
+            <a
+              href="https://github.com/code-joshua/hangman"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-button"
+            >
+              View Source
+            </a>
+            <button
+              className="footer-button"
+              onClick={() => setShowLicense(true)}
+            >
+              View License
+            </button>
+          </div>
         </div>
       </main>
 
-      <footer>
-        <p>Use your keyboard or click the buttons to guess letters</p>
-      </footer>
+      {showLicense && (
+        <LicenseModal onClose={() => setShowLicense(false)} />
+      )}
     </div>
   );
 }

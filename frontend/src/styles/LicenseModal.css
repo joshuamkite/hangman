@@ -1,0 +1,106 @@
+/* License Page - Full Page Display */
+.license-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-color);
+    z-index: 2000;
+    overflow-y: auto;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.license-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.license-header h1 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 2rem;
+}
+
+.close-license-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    white-space: nowrap;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px var(--shadow-primary);
+}
+
+.close-license-button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-primary);
+}
+
+.close-license-button:active {
+    transform: translateY(0);
+}
+
+.license-text-wrapper {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    background: var(--surface-bg);
+    color: var(--text-primary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--border-color);
+}
+
+.license-text-wrapper p {
+    margin: 0 0 1rem 0;
+}
+
+.license-text-wrapper p:last-child {
+    margin-bottom: 0;
+}
+
+.license-footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .license-container {
+        padding: 1rem;
+    }
+
+    .license-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .license-text-wrapper {
+        padding: 1rem;
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+
+    .close-license-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}
