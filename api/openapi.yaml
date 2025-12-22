@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info:
+  title: Hangman Word Generator API
+  description: |
+    Generate random words for hangman games using NLTK's WordNet corpus with comprehensive profanity and distressing content filtering.
+
+    ## Content Filtering
+
+    The API filters out:
+    - **Profanity**: Uses better-profanity library to filter offensive words and definitions
+    - **Distressing Terms**: Filters words related to violence, death, medical conditions, body fluids, injuries
+    - **Distressing Domains**: Removes words from medical, military, warfare, slang, vulgar, and offensive domains
+    - **Invalid Characters**: Removes words with underscores or hyphens
+
+  version: 1.0.0
+  contact:
+    name: API Support
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://api.example.com/prod
+    description: Production (to be configured)
+
+paths:
+  /word:
+    get:
+      summary: Generate a random word
+      description: |
+        Returns a random word from WordNet corpus that passes all content filters.
+        The word is safe for all audiences and appropriate for hangman games.
+      operationId: getRandomWord
+      tags:
+        - Words
+      parameters:
+        - name: length
+          in: query
+          description: Exact word length (minimum value is 3)
+          required: false
+          schema:
+            type: integer
+            minimum: 3
+            default: 5
+            example: 8
+      responses:
+        "200":
+          description: Successfully generated a word
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WordResponse"
+              examples:
+                default:
+                  summary: Default word generation
+                  value:
+                    word: "ELEPHANT"
+                    length: 8
+                    definition: "five-toed pachyderm"
+                    attempts: 3
+                short:
+                  summary: Short word
+                  value:
+                    word: "CAT"
+                    length: 3
+                    definition: "feline mammal usually having thick soft fur"
+                    attempts: 1
+                long:
+                  summary: Long word
+                  value:
+                    word: "EXTRAORDINARY"
+                    length: 13
+                    definition: "beyond what is ordinary or usual; highly unusual or exceptional"
+                    attempts: 12
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                lengthTooSmall:
+                  summary: length too small
+                  value:
+                    error: "length must be at least 3"
+                invalidType:
+                  summary: Invalid parameter type
+                  value:
+                    error: "Invalid parameter: invalid literal for int() with base 10: 'abc'"
+        "500":
+          description: Server error - failed to generate word
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                generationFailed:
+                  summary: Could not find valid word
+                  value:
+                    error: "Failed to generate word"
+                    message: "Could not find a valid word after 1000 attempts"
+
+components:
+  schemas:
+    WordResponse:
+      type: object
+      required:
+        - word
+        - length
+        - definition
+        - attempts
+      properties:
+        word:
+          type: string
+          description: The generated word in uppercase
+          example: "ELEPHANT"
+        length:
+          type: integer
+          description: Number of characters in the word
+          example: 8
+        definition:
+          type: string
+          description: WordNet definition of the word
+          example: "five-toed pachyderm"
+          nullable: true
+        attempts:
+          type: integer
+          description: Number of attempts needed to find a valid word (for debugging)
+          example: 3
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Error message describing what went wrong
+          example: "min_length must be at least 3"
+        message:
+          type: string
+          description: Additional error details (optional)
+          example: "Could not find a valid word after 1000 attempts"
+
+tags:
+  - name: Words
+    description: Word generation endpoints

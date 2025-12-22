@@ -1,0 +1,10 @@
+[project]
+name = "hangman-word-generator"
+version = "0.1.0"
+description = "Lambda function for generating hangman words using NLTK"
+requires-python = ">=3.11"
+dependencies = ["nltk>=3.8.1", "better-profanity>=0.7.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

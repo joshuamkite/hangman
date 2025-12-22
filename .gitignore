@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual Environment (created by uv)
+api/.venv/
+
+# Testing
+api/.pytest_cache/
+
+# NLTK Data (downloaded during build)
+api/lambda/nltk_data/
