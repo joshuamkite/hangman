@@ -227,7 +227,7 @@ function App() {
               Visit My Website
             </a>
             <a
-              href="https://github.com/code-joshua/hangman"
+              href="https://github.com/joshuamkite/hangman"
               target="_blank"
               rel="noopener noreferrer"
               className="footer-button"
