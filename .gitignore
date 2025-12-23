@@ -10,3 +10,8 @@ api/.pytest_cache/
 
 # NLTK Data (downloaded during build)
 api/lambda/nltk_data/
+
+
+api/lambda/package/*
+terraform/builds/*
+*.zip
