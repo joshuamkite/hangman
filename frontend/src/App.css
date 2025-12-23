@@ -449,6 +449,10 @@ footer {
   box-shadow: 0 2px 8px var(--shadow-primary);
   text-decoration: none;
   display: inline-block;
+  white-space: nowrap;
+  line-height: 1.5;
+  font-family: inherit;
+  min-width: fit-content;
 }
 
 .footer-button:hover {
