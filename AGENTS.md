@@ -98,11 +98,15 @@ See [`api/lambda/handler.py`](api/lambda/handler.py) for filter implementation.
 - CORS is enabled for frontend integration
 - All API responses include CORS headers
 
-## Future Development Ideas
+## AI Agent Guidelines
 
-- Add multiplayer support
-- Implement difficulty-based word selection (beyond just length)
-- Add word categories/themes
-- Include hint system
-- Add statistics/leaderboard
-- Support multiple languages
+**DO NOT:**
+- Speculate on potential features or improvements unless explicitly asked
+- Suggest "future development ideas" unprompted
+- Offer unsolicited recommendations for enhancements
+
+**DO:**
+- Focus on the specific task requested
+- Ask clarifying questions when requirements are unclear
+- Maintain consistency with existing codebase patterns
+- Ensure AGPL-3.0 license compliance in all changes
