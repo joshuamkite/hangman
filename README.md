@@ -10,6 +10,7 @@ Full-stack hangman game with React TypeScript frontend and Python Lambda backend
 ![AWS Lambda](https://img.shields.io/badge/AWS-Lambda-FF9900?style=flat&logo=awslambda)
 
 - [Hangman Game](#hangman-game)
+  - [Screenshots](#screenshots)
   - [Features](#features)
   - [Architecture](#architecture)
   - [Local Development](#local-development)
@@ -30,6 +31,12 @@ Full-stack hangman game with React TypeScript frontend and Python Lambda backend
   - [Resources](#resources)
   - [Inputs](#inputs)
   - [Outputs](#outputs)
+
+## Screenshots
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| ![Hangman Dark Mode](screenshots/hangman-dark.jpg) | ![Hangman Light Mode](screenshots/hangman-light.jpg) |
 
 ## Features
 
