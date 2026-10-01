@@ -1,6 +1,6 @@
 module "api_gateway" {
   source  = "terraform-aws-modules/apigateway-v2/aws"
-  version = ">= 6.0"
+  version = ">= 6.1"
 
   name          = "${local.name_prefix}-api"
   description   = "Hangman Word Generator HTTP API"

@@ -1,14 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
-import type { GameState, FigureType, Difficulty } from './types';
-import { MAX_WRONG_GUESSES } from './types';
-import { fetchWord } from './api';
-import PersonFigure from './components/PersonFigure';
-import SpiderFigure from './components/SpiderFigure';
-import WordDisplay from './components/WordDisplay';
-import Keyboard from './components/Keyboard';
-import GameSettings from './components/GameSettings';
-import LicenseModal from './components/LicenseModal';
-import './App.css';
+import { useCallback, useEffect, useState } from 'react'
+import { fetchWord } from './api'
+import GameSettings from './components/GameSettings'
+import Keyboard from './components/Keyboard'
+import LicenseModal from './components/LicenseModal'
+import PersonFigure from './components/PersonFigure'
+import SpiderFigure from './components/SpiderFigure'
+import WordDisplay from './components/WordDisplay'
+import type { Difficulty, FigureType, GameState } from './types'
+import { MAX_WRONG_GUESSES } from './types'
+import './App.css'
 
 function App() {
   const [gameState, setGameState] = useState<GameState>({
@@ -19,95 +19,99 @@ function App() {
     definitions: [],
     figureType: 'person',
     difficulty: 'easy',
-    wordLength: 5
-  });
+    wordLength: 5,
+  })
 
-  const [error, setError] = useState<string>('');
-  const [showLicense, setShowLicense] = useState(false);
+  const [error, setError] = useState<string>('')
+  const [showLicense, setShowLicense] = useState(false)
 
   const startNewGame = useCallback(async () => {
-    setError('');
-    setGameState(prev => ({ ...prev, gameStatus: 'loading' }));
+    setError('')
+    setGameState((prev) => ({ ...prev, gameStatus: 'loading' }))
 
     try {
-      const data = await fetchWord(gameState.wordLength);
-      setGameState(prev => ({
+      const data = await fetchWord(gameState.wordLength)
+      setGameState((prev) => ({
         ...prev,
         word: data.word,
         definitions: data.definitions,
         guessedLetters: new Set(),
         incorrectGuesses: [],
-        gameStatus: 'playing'
-      }));
+        gameStatus: 'playing',
+      }))
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch word');
-      setGameState(prev => ({ ...prev, gameStatus: 'playing' }));
+      setError(err instanceof Error ? err.message : 'Failed to fetch word')
+      setGameState((prev) => ({ ...prev, gameStatus: 'playing' }))
     }
-  }, [gameState.wordLength]);
+  }, [gameState.wordLength])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: fetch a word once on mount only
   useEffect(() => {
-    startNewGame();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    startNewGame()
+  }, [])
 
-  const handleGuess = useCallback((letter: string) => {
-    if (gameState.gameStatus !== 'playing') return;
-    if (gameState.guessedLetters.has(letter)) return;
+  const handleGuess = useCallback(
+    (letter: string) => {
+      if (gameState.gameStatus !== 'playing') return
+      if (gameState.guessedLetters.has(letter)) return
 
-    const newGuessedLetters = new Set(gameState.guessedLetters);
-    newGuessedLetters.add(letter);
+      const newGuessedLetters = new Set(gameState.guessedLetters)
+      newGuessedLetters.add(letter)
 
-    const isCorrect = gameState.word.includes(letter);
-    const newIncorrectGuesses = isCorrect
-      ? gameState.incorrectGuesses
-      : [...gameState.incorrectGuesses, letter];
+      const isCorrect = gameState.word.includes(letter)
+      const newIncorrectGuesses = isCorrect
+        ? gameState.incorrectGuesses
+        : [...gameState.incorrectGuesses, letter]
 
-    // Check win condition
-    const allLettersGuessed = gameState.word
-      .split('')
-      .every(l => newGuessedLetters.has(l));
+      // Check win condition
+      const allLettersGuessed = gameState.word
+        .split('')
+        .every((l) => newGuessedLetters.has(l))
 
-    // Check lose condition
-    const maxWrong = MAX_WRONG_GUESSES[gameState.difficulty];
-    const lost = newIncorrectGuesses.length >= maxWrong;
+      // Check lose condition
+      const maxWrong = MAX_WRONG_GUESSES[gameState.difficulty]
+      const lost = newIncorrectGuesses.length >= maxWrong
 
-    setGameState(prev => ({
-      ...prev,
-      guessedLetters: newGuessedLetters,
-      incorrectGuesses: newIncorrectGuesses,
-      gameStatus: allLettersGuessed ? 'won' : lost ? 'lost' : 'playing'
-    }));
-  }, [gameState]);
+      setGameState((prev) => ({
+        ...prev,
+        guessedLetters: newGuessedLetters,
+        incorrectGuesses: newIncorrectGuesses,
+        gameStatus: allLettersGuessed ? 'won' : lost ? 'lost' : 'playing',
+      }))
+    },
+    [gameState],
+  )
 
   // Keyboard event listener
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      const key = event.key.toUpperCase();
+      const key = event.key.toUpperCase()
       if (/^[A-Z]$/.test(key)) {
-        handleGuess(key);
+        handleGuess(key)
       }
-    };
+    }
 
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [handleGuess]);
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [handleGuess])
 
   const handleFigureTypeChange = (type: FigureType) => {
-    setGameState(prev => ({ ...prev, figureType: type }));
-  };
+    setGameState((prev) => ({ ...prev, figureType: type }))
+  }
 
   const handleDifficultyChange = (difficulty: Difficulty) => {
-    setGameState(prev => ({ ...prev, difficulty }));
-  };
+    setGameState((prev) => ({ ...prev, difficulty }))
+  }
 
   const handleWordLengthChange = (length: number) => {
     if (length >= 3 && length <= 20) {
-      setGameState(prev => ({ ...prev, wordLength: length }));
+      setGameState((prev) => ({ ...prev, wordLength: length }))
     }
-  };
+  }
 
-  const isGameActive = gameState.gameStatus === 'playing';
-  const isGameOver = gameState.gameStatus === 'won' || gameState.gameStatus === 'lost';
+  const isGameActive = gameState.gameStatus === 'playing'
+  const isGameOver =
+    gameState.gameStatus === 'won' || gameState.gameStatus === 'lost'
 
   return (
     <div className="app">
@@ -116,11 +120,7 @@ function App() {
       </header>
 
       <main className="game-container">
-        {error && (
-          <div className="error-message">
-            {error}
-          </div>
-        )}
+        {error && <div className="error-message">{error}</div>}
 
         <div className="game-wrapper">
           <GameSettings
@@ -148,7 +148,8 @@ function App() {
                 />
               )}
               <div className="wrong-count">
-                Wrong guesses: {gameState.incorrectGuesses.length} / {MAX_WRONG_GUESSES[gameState.difficulty]}
+                Wrong guesses: {gameState.incorrectGuesses.length} /{' '}
+                {MAX_WRONG_GUESSES[gameState.difficulty]}
               </div>
             </div>
 
@@ -165,7 +166,8 @@ function App() {
 
                   {gameState.incorrectGuesses.length > 0 && (
                     <div className="incorrect-letters">
-                      <strong>Incorrect:</strong> {gameState.incorrectGuesses.join(', ')}
+                      <strong>Incorrect:</strong>{' '}
+                      {gameState.incorrectGuesses.join(', ')}
                     </div>
                   )}
 
@@ -173,7 +175,10 @@ function App() {
                     <div className="game-result won">
                       <h2>You Won!</h2>
                       <div className="definitions">
-                        <strong>Definition{gameState.definitions.length > 1 ? 's' : ''}:</strong>
+                        <strong>
+                          Definition
+                          {gameState.definitions.length > 1 ? 's' : ''}:
+                        </strong>
                         {gameState.definitions.length > 0 ? (
                           <ol>
                             {gameState.definitions.map((def, idx) => (
@@ -190,9 +195,14 @@ function App() {
                   {gameState.gameStatus === 'lost' && (
                     <div className="game-result lost">
                       <h2>Game Over!</h2>
-                      <p>The word was: <strong>{gameState.word}</strong></p>
+                      <p>
+                        The word was: <strong>{gameState.word}</strong>
+                      </p>
                       <div className="definitions">
-                        <strong>Definition{gameState.definitions.length > 1 ? 's' : ''}:</strong>
+                        <strong>
+                          Definition
+                          {gameState.definitions.length > 1 ? 's' : ''}:
+                        </strong>
                         {gameState.definitions.length > 0 ? (
                           <ol>
                             {gameState.definitions.map((def, idx) => (
@@ -219,7 +229,7 @@ function App() {
 
           <div className="game-footer">
             <a
-              href="https://www.joshuakite.co.uk/"
+              href="https://joshuakite.co.uk/web-applications.html"
               target="_blank"
               rel="noopener noreferrer"
               className="footer-button"
@@ -244,11 +254,9 @@ function App() {
         </div>
       </main>
 
-      {showLicense && (
-        <LicenseModal onClose={() => setShowLicense(false)} />
-      )}
+      {showLicense && <LicenseModal onClose={() => setShowLicense(false)} />}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

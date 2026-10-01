@@ -49,7 +49,7 @@ class TestWordGeneration:
 
         assert 'word' in result
         assert 'length' in result
-        assert 'definition' in result
+        assert 'definitions' in result
         assert 'attempts' in result
 
         assert len(result['word']) == 5
@@ -95,7 +95,7 @@ class TestLambdaHandler:
         body = json.loads(response['body'])
         assert 'word' in body
         assert 'length' in body
-        assert 'definition' in body
+        assert 'definitions' in body
         assert body['length'] == 5  # default
 
     def test_handler_custom_length(self):
