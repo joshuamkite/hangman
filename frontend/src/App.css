@@ -279,7 +279,7 @@ main.game-container {
   min-width: 2rem;
   text-align: center;
   color: var(--text-primary);
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
 }
 
 /* Incorrect Letters */
@@ -313,12 +313,20 @@ main.game-container {
 }
 
 .game-result.won {
-  background: linear-gradient(135deg, var(--success-bg) 0%, var(--success-border) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--success-bg) 0%,
+    var(--success-border) 100%
+  );
   color: white;
 }
 
 .game-result.lost {
-  background: linear-gradient(135deg, var(--error-bg) 0%, var(--error-border) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--error-bg) 0%,
+    var(--error-border) 100%
+  );
   color: white;
 }
 

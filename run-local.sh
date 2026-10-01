@@ -16,7 +16,8 @@ if [ ! -d "$SCRIPT_DIR/api/.venv" ]; then
 fi
 
 # Check if NLTK data is downloaded
-if [ ! -d "$SCRIPT_DIR/api/nltk_data" ]; then
+export NLTK_DATA="$SCRIPT_DIR/api/lambda/nltk_data"
+if [ ! -d "$NLTK_DATA" ]; then
 	echo "Downloading NLTK data..."
 	cd "$SCRIPT_DIR/api" && uv run python download_nltk_data.py
 fi
@@ -24,7 +25,7 @@ fi
 # Check if frontend dependencies are installed
 if [ ! -d "$SCRIPT_DIR/frontend/node_modules" ]; then
 	echo "Installing frontend dependencies..."
-	cd "$SCRIPT_DIR/frontend" && npm install
+	cd "$SCRIPT_DIR/frontend" && bun install
 fi
 
 # Start API server in background
@@ -47,7 +48,7 @@ echo "  Press Ctrl+C to stop both servers"
 echo "================================================"
 echo ""
 
-cd "$SCRIPT_DIR/frontend" && npm run dev
+cd "$SCRIPT_DIR/frontend" && bun run dev
 
 # When frontend stops (Ctrl+C), kill the API server
 kill $API_PID 2>/dev/null

@@ -7,7 +7,7 @@ Hangman game with React TypeScript frontend and Python Lambda backend, deployed 
 ## Key Technologies
 
 - **Backend**: Python 3.13, NLTK WordNet, better-profanity, AWS Lambda
-- **Frontend**: React 18, TypeScript, Vite
+- **Frontend**: React 19, TypeScript 7, Vite 8, Bun, Biome
 - **Infrastructure**: OpenTofu/Terraform, API Gateway, S3, CloudFront
 - **License**: AGPL-3.0
 

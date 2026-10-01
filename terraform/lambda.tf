@@ -55,7 +55,7 @@ resource "null_resource" "download_nltk_data" {
 
 module "lambda_function" {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 8.1"
+  version = "~> 8.9"
 
   function_name = "${local.name_prefix}-word-generator"
   description   = "Hangman word generator using NLTK"

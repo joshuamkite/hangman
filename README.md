@@ -2,12 +2,14 @@
 
 Full-stack hangman game with React TypeScript frontend and Python Lambda backend. Various player options and content filtering.
 
-![React](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat&logo=typescript)
-![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=flat&logo=python)
-![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat&logo=vite)
-![OpenTofu](https://img.shields.io/badge/OpenTofu-1.10+-FFDA18?style=flat&logo=opentofu&logoColor=000000)
-![AWS Lambda](https://img.shields.io/badge/AWS-Lambda-FF9900?style=flat&logo=awslambda)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-7-3178C6?style=flat&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=flat&logo=vite&logoColor=white)
+![Bun](https://img.shields.io/badge/Bun-1.4-000000?style=flat&logo=bun&logoColor=white)
+![Biome](https://img.shields.io/badge/Biome-2-60A5FA?style=flat&logo=biome&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=flat&logo=python&logoColor=white)
+![OpenTofu](https://img.shields.io/badge/OpenTofu-1.10+-FFDA18?style=flat&logo=opentofu&logoColor=black)
+![AWS Lambda](https://img.shields.io/badge/AWS-Lambda-FF9900?style=flat&logo=awslambda&logoColor=white)
 
 - [Hangman Game](#hangman-game)
   - [Screenshots](#screenshots)
@@ -91,7 +93,7 @@ hangman/
 
 **Stack:**
 - **Backend**: Python 3.13, NLTK WordNet, better-profanity, FastAPI (local), AWS Lambda (production)
-- **Frontend**: React 18, TypeScript, Vite
+- **Frontend**: React 19, TypeScript 7, Vite 8, Bun, Biome
 - **Infrastructure**: OpenTofu/Terraform, API Gateway, S3, CloudFront, ACM, Route53
 
 ## Local Development
@@ -99,7 +101,7 @@ hangman/
 ### Prerequisites
 
 - Python 3.11+
-- Node.js 18+
+- Bun
 - uv (Python package manager)
 
 ### Quick Start
@@ -129,16 +131,17 @@ uv run python local_server.py  # Starts FastAPI server with Swagger UI at http:/
 **Terminal 2 - Frontend:**
 ```bash
 cd frontend
-npm install
+bun install
 cp .env.example .env
-npm run dev  # Start dev server at http://localhost:5173
+bun run dev  # Start dev server at http://localhost:5173
 ```
 
 **Available Scripts:**
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build locally
-- `npm run lint` - Run ESLint
+- `bun run dev` - Start development server with hot reload
+- `bun run build` - Build for production
+- `bun run preview` - Preview production build locally
+- `bun run lint` - Lint with Biome
+- `bun run format` - Format with Biome
 
 **Test Suite and API Testing:**
 ```bash
@@ -237,7 +240,7 @@ The API filters:
 - OpenTofu/Terraform 1.10+
 - AWS CLI configured
 - Python 3.13
-- Node.js
+- Bun
 - Docker
 - Route53 hosted zone for your domain
 
@@ -259,7 +262,7 @@ The API filters:
 Triggers on changes to [`api/lambda/handler.py`](api/lambda/handler.py) or [`api/lambda/pyproject.toml`](api/lambda/pyproject.toml).
 
 **Frontend Build**:
-1. Install npm dependencies
+1. Install bun dependencies
 2. Build React app with `VITE_API_URL`
 3. Sync to S3 with cache headers
 4. Invalidate CloudFront cache
