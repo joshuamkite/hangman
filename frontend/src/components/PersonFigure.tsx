@@ -33,29 +33,12 @@ export default function PersonFigure({
         className="gallows-line"
         strokeWidth="4"
       />
-      <line
-        x1="50"
-        y1="230"
-        x2="50"
-        y2="20"
+      <path
+        d="M50 230 V20 H130 V50"
         className="gallows-line"
         strokeWidth="4"
-      />
-      <line
-        x1="50"
-        y1="20"
-        x2="130"
-        y2="20"
-        className="gallows-line"
-        strokeWidth="4"
-      />
-      <line
-        x1="130"
-        y1="20"
-        x2="130"
-        y2="50"
-        className="gallows-line"
-        strokeWidth="4"
+        fill="none"
+        strokeLinejoin="miter"
       />
 
       {/* Person parts */}
