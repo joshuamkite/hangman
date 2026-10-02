@@ -10,6 +10,39 @@ const PIECES_TO_SHOW = {
   hard: 6,
 } as const
 
+const WEB_CENTER = { x: 100, y: 125 }
+
+const WEB_SPOKE_COUNT = 10
+const WEB_SPOKE_RADIUS = 100
+
+// Spokes at even angles, starting straight up and going clockwise
+const WEB_SPOKES = Array.from({ length: WEB_SPOKE_COUNT }, (_, i) => {
+  const angle = (i / WEB_SPOKE_COUNT) * 2 * Math.PI
+  return { dx: Math.sin(angle), dy: -Math.cos(angle) }
+})
+
+// Distance from the center at which each ring's corners sit on the spokes
+const WEB_RING_RADII = [31, 62, 92] as const
+
+// How far each strand sags toward the center between spokes (0 = straight)
+const WEB_RING_SAG = 0.12
+
+function webRingPath(radius: number) {
+  const corners = WEB_SPOKES.map(({ dx, dy }) => ({
+    x: WEB_CENTER.x + dx * radius,
+    y: WEB_CENTER.y + dy * radius,
+  }))
+  const first = corners[0]
+  const segments = corners.map((from, i) => {
+    const to = corners[(i + 1) % corners.length]
+    const sag = 1 - WEB_RING_SAG
+    const cx = WEB_CENTER.x + ((from.x + to.x) / 2 - WEB_CENTER.x) * sag
+    const cy = WEB_CENTER.y + ((from.y + to.y) / 2 - WEB_CENTER.y) * sag
+    return `Q${cx} ${cy} ${to.x} ${to.y}`
+  })
+  return `M${first.x} ${first.y} ${segments.join(' ')}Z`
+}
+
 export default function SpiderFigure({
   wrongGuesses,
   difficulty,
@@ -27,111 +60,28 @@ export default function SpiderFigure({
       {/* Larger Spider Web - centered */}
       <g className="spider-web">
         {/* Radial threads from center */}
-        <line
-          x1="100"
-          y1="125"
-          x2="100"
-          y2="10"
-          className="web-thread"
-          strokeWidth="2"
-        />
-        <line
-          x1="100"
-          y1="125"
-          x2="175"
-          y2="25"
-          className="web-thread"
-          strokeWidth="2"
-        />
-        <line
-          x1="100"
-          y1="125"
-          x2="195"
-          y2="85"
-          className="web-thread"
-          strokeWidth="2"
-        />
-        <line
-          x1="100"
-          y1="125"
-          x2="195"
-          y2="165"
-          className="web-thread"
-          strokeWidth="2"
-        />
-        <line
-          x1="100"
-          y1="125"
-          x2="175"
-          y2="225"
-          className="web-thread"
-          strokeWidth="2"
-        />
-        <line
-          x1="100"
-          y1="125"
-          x2="100"
-          y2="240"
-          className="web-thread"
-          strokeWidth="2"
-        />
-        <line
-          x1="100"
-          y1="125"
-          x2="25"
-          y2="225"
-          className="web-thread"
-          strokeWidth="2"
-        />
-        <line
-          x1="100"
-          y1="125"
-          x2="5"
-          y2="165"
-          className="web-thread"
-          strokeWidth="2"
-        />
-        <line
-          x1="100"
-          y1="125"
-          x2="5"
-          y2="85"
-          className="web-thread"
-          strokeWidth="2"
-        />
-        <line
-          x1="100"
-          y1="125"
-          x2="25"
-          y2="25"
-          className="web-thread"
-          strokeWidth="2"
-        />
+        {WEB_SPOKES.map(({ dx, dy }) => (
+          <line
+            key={`${dx}-${dy}`}
+            x1={WEB_CENTER.x}
+            y1={WEB_CENTER.y}
+            x2={WEB_CENTER.x + dx * WEB_SPOKE_RADIUS}
+            y2={WEB_CENTER.y + dy * WEB_SPOKE_RADIUS}
+            className="web-thread"
+            strokeWidth="2"
+          />
+        ))}
 
-        {/* Connecting threads - circular patterns */}
-        {/* Inner circle */}
-        <polygon
-          points="100,95 120,100 130,110 130,140 120,150 100,155 80,150 70,140 70,110 80,100"
-          className="web-circle"
-          strokeWidth="2"
-          fill="none"
-        />
-
-        {/* Middle circle */}
-        <polygon
-          points="100,65 135,75 155,95 155,155 135,175 100,185 65,175 45,155 45,95 65,75"
-          className="web-circle"
-          strokeWidth="2"
-          fill="none"
-        />
-
-        {/* Outer circle */}
-        <polygon
-          points="100,35 165,50 190,85 190,165 165,200 100,215 35,200 10,165 10,85 35,50"
-          className="web-circle"
-          strokeWidth="2"
-          fill="none"
-        />
+        {/* Connecting threads - rings with corners on the spokes */}
+        {WEB_RING_RADII.map((radius) => (
+          <path
+            key={radius}
+            d={webRingPath(radius)}
+            className="web-circle"
+            strokeWidth="2"
+            fill="none"
+          />
+        ))}
       </g>
 
       {/* Spider parts - sitting at web center */}
